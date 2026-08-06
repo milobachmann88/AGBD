@@ -180,6 +180,59 @@ y eso generaria un grafico aun mas discontinuo porque no agruparia los valores
 numericamente como sort.values, sino alfabeticamente, por lo que para un grafico
 de linea mayormente conviene el sort.values
 '''
+#12
+
+# Su filtro_avanzado original
+resultado_original = df[filtro_avanzado]
+ 
+# El mismo filtro con .query()
+valor_limite = 90
+resultado_query = df.query('Général > @valor_limite and Pays == "France"')
+ 
+print('Con corchetes:')
+print(resultado_original)
+print('\nCon .query():')
+print(resultado_query)
+ 
+print('\n¿Son iguales?', resultado_original.equals(resultado_query))
+
+#¿El resultado de .query() es idéntico al de su filtro_avanzado? ¿Por qué?
+#No, no es identico porque en mi filtro avanzado yo había puesto que filtre los nombres con A
+#¿Cuál de las dos formas les parece más clara para leer?
+#Me parece más clara de leer la forma con query porque filtra mejor los resultados
+#¿Qué ventaja tiene usar @ en lugar de escribir el valor directamente en el texto?
+#La ventaja que tiene es que se puede cambiar el valor en la variable en vez de cada vez
+#que aparezca en el texto
+
+#13
+
+# Incluir categorías seleccionadas
+categorias_elegidas = ['France', 'Brazil']   # sus valores reales
+df_incluidos = df[df['Pays'].isin(categorias_elegidas)]
+ 
+# Excluir esas mismas categorías
+df_excluidos = df[~df['Pays'].isin(categorias_elegidas)]
+ 
+print(f'Filas incluidas ({len(df_incluidos)}):')
+print(df_incluidos)
+print(f'\nFilas excluidas ({len(df_excluidos)}):')
+print(df_excluidos)
+ 
+# Verificar que suman el total
+total = len(df)
+suma  = len(df_incluidos) + len(df_excluidos)
+print(f'\nTotal original: {total}  |  Incluidos + Excluidos: {suma}')
+print(f'¿Coinciden? {total == suma}')
+
+#¿La suma de filas incluidas + excluidas da exactamente el total? ¿Por qué siempre debería ser así?
+#Si, es la misma, porque siempre se separan partes de un entero, no agrega ni quita nada
+#¿Qué ventaja tiene .isin(['A','B','C']) frente a escribir == 'A' | == 'B' | == 'C'?
+#La ventaja que tiene el .isin es que acorta la cantidad de codigo que tenemos que escribir
+#¿Cuándo usarían la versión con ~ en un análisis real?
+#Usaría la versióm con ~ cuando quiera saber qué grupos no cumplen con una condición
+
+
+
 
 
 
