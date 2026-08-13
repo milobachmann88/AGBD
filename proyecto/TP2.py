@@ -305,6 +305,17 @@ par_min = correlacion_sin_diag.stack().idxmin()
 print(f'\nPar más correlacionado:   {par_max[0]} ↔ {par_max[1]}')
 print(f'Par menos correlacionado: {par_min[0]} ↔ {par_min[1]}')
 
+#¿Qué par de columnas tiene la correlación más alta? ¿Tiene sentido con sus datos?
+# Hay varias columnas con una correlacion alta, pero un par de ellas son Tacle glisse y Tacle debout.
+#Investigué y eso significa barrida y entrada de pie, por lo que si tiene sentido porque son
+# habilidades defensivas basicas
+#¿Qué significa una correlación cercana a 1? ¿Y cercana a 0? ¿Y negativa?
+# Correlacion cercana a 1 significa que si una variable sube, la otra tambièn.
+# cercana a 0 significa que no tienen nada que ver una con la otra, y negativa significa que
+# si una sube, la otra baja
+#¿Por qué usamos el DataFrame completo para calcular la correlación y no el filtrado?
+# Usamos el df completo para no perder datos importantes
+
 
 
 
