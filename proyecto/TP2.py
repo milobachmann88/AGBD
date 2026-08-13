@@ -231,6 +231,81 @@ print(f'¿Coinciden? {total == suma}')
 #¿Cuándo usarían la versión con ~ en un análisis real?
 #Usaría la versióm con ~ cuando quiera saber qué grupos no cumplen con una condición
 
+#14
+ # Sobre el DataFrame COMPLETO
+print('=== DataFrame completo ===')
+# cuantas veces aparece cada categoría
+print(df['Pays'].value_counts())
+# qué valores unicos hay
+print('Valores únicos:', df['Pays'].unique())
+# cuanta camtidad de valores unicos hay
+print('Cantidad de categorías:', df['Pays'].nunique())
+print('Porcentajes:')
+print((df['Pays'].value_counts(normalize=True) * 100).round(1))
+ 
+# Sobre el DataFrame FILTRADO
+df_filtrado = df[filtro_avanzado]
+ 
+print('\n=== DataFrame filtrado ===')
+print(df_filtrado['Pays'].value_counts())
+print('Valores únicos:', df_filtrado['Pays'].unique())
+print('Cantidad de categorías:', df_filtrado['Pays'].nunique())
+print('Porcentajes:')
+print((df_filtrado['Pays'].value_counts(normalize=True) * 100).round(1))
+
+# ¿Cambia la distribución de categorías entre el DataFrame completo y el filtrado? ¿Qué dice eso?
+#Si, cambia, porque en el df original Inglaterra tiene un porcentaje de 8.8%,, y en el
+#filtrado es de 6.7%, lo que significa que hay una menor cantidad de paises para sacar el porcentaje
+# ¿Hay alguna categoría que desapareció completamente al aplicar el filtro?
+# Desaparecieron muchas categorias, porque en el df original hay 161, y en el filtrado hay 109
+# ¿value_counts() y groupby().count() dan el mismo resultado? ¿Cuándo usarían cada uno?
+# Dan casi el mismo resultado pero value counts devuelve una tabla con el nombre de categoria
+# y la cantidad de veces que aparece esa categoria, ideal cuando querés solo
+# la frecuencia de la categoría, mientras que con groupBy permite agrupar los datos
+#por más de de una columna, y pueden agregarse otros metodos como ver promedios
+
+#15
+import seaborn as sns
+import matplotlib.pyplot as plt
+import numpy as np
+ 
+# Paso 1: exportar el DataFrame filtrado
+df_filtrado = df[filtro_avanzado]
+df_filtrado.to_csv('fifa_filtrado.csv', index=False)
+print(f'Archivo exportado: {len(df_filtrado)} filas guardadas.')
+ 
+# Paso 2: correlación del DataFrame completo
+correlacion = df.corr(numeric_only=True)
+print('\nMatriz de correlación:')
+print(correlacion.round(2))
+ 
+# Pasos 3 y 4: heatmap y guardar
+plt.figure(figsize=(16, 12))
+sns.heatmap(
+    correlacion,
+    annot=False,
+    fmt='.2f',
+    cmap='coolwarm',   # cambiar por la que elijan
+    linewidths=0.5,
+    vmin=-1, vmax=1,
+    xticklabels=True, yticklabels=True # Asegurar que se vean todas las etiquetas
+)
+plt.xticks(rotation=45, ha='right')
+plt.title('Correlación entre variables — fifa', fontweight='bold')
+plt.tight_layout()
+plt.savefig('heatmap_fifa2.png', dpi=150)
+plt.show()
+ 
+# Paso 5: identificar el par más y menos correlacionado
+mask = np.triu(np.ones(correlacion.shape), k=0).astype(bool)
+correlacion_sin_diag = correlacion.where(~mask)
+ 
+par_max = correlacion_sin_diag.stack().idxmax()
+par_min = correlacion_sin_diag.stack().idxmin()
+print(f'\nPar más correlacionado:   {par_max[0]} ↔ {par_max[1]}')
+print(f'Par menos correlacionado: {par_min[0]} ↔ {par_min[1]}')
+
+
 
 
 
